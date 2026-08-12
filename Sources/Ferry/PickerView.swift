@@ -51,7 +51,6 @@ struct PickerView: View {
                 }
             }
 
-            Divider()
             footer
         }
         .padding(16)
@@ -89,12 +88,17 @@ struct PickerView: View {
     }
 
     /// 操作キーの説明はここに出さない（docs/usage.md にある）。
+    /// ホストが無い URL（ローカルファイル）ではルールを作れないので、押せる物を出さない。
+    @ViewBuilder
     private var footer: some View {
-        Toggle(isOn: $model.remember) {
-            Text("記憶")
-                .font(.caption)
+        if model.ruleHost != nil {
+            Divider()
+            Toggle(isOn: $model.remember) {
+                Text("記憶")
+                    .font(.caption)
+            }
+            .toggleStyle(.checkbox)
         }
-        .toggleStyle(.checkbox)
     }
 }
 

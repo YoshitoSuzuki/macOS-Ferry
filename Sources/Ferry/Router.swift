@@ -28,7 +28,9 @@ final class Router {
                 AppDelegate.shared?.showSettings()
                 continue
             }
-            guard scheme == "http" || scheme == "https" else {
+            // file: も受ける。既定ブラウザにすると `.html` の担当も Ferry になるため、
+            // ここで受けないと `md` のようなローカルHTMLのプレビューが無言で失敗する。
+            guard scheme == "http" || scheme == "https" || scheme == "file" else {
                 AppLog.write("受信: 扱えないスキーム \(url.absoluteString)")
                 continue
             }
@@ -62,6 +64,17 @@ final class Router {
         if state.isPaused {
             AppLog.write("一時停止中なので逃げ先へ流す")
             deliver(url, to: state.fallbackBrowser())
+            return
+        }
+
+        // ローカルファイルにはホストが無いので、ルールも前処理も効かない。
+        // 迷わせても仕方がないので設定ブラウザへ直接渡す（修飾キーを押していればパネル）。
+        if url.isFileURL {
+            if forcePicker {
+                await showPicker(for: url)
+            } else {
+                deliver(url, to: state.fallbackBrowser())
+            }
             return
         }
 
