@@ -83,22 +83,52 @@ struct SettingsView: View {
 
     // MARK: - 動作
 
+    /// ラベルは左揃えで縦に並べ、コントロールの左端と幅を揃える。
+    /// Picker の既定のラベル配置は右揃えになるので、ラベルは自分で置いて
+    /// `labelsHidden()` にし、幅も明示する。
     private var behaviorSection: some View {
         SettingsSection("動作") {
-            Picker("修飾キー", selection: $state.config.forcePickerModifier) {
-                ForEach(ModifierChoice.allCases) { choice in
-                    Text(choice.label).tag(choice)
+            VStack(alignment: .leading, spacing: 10) {
+                settingRow("修飾キー") {
+                    Picker("", selection: $state.config.forcePickerModifier) {
+                        ForEach(ModifierChoice.allCases) { choice in
+                            item(choice.label).tag(choice)
+                        }
+                    }
+                }
+                settingRow("設定ブラウザ") {
+                    Picker("", selection: fallbackBinding) {
+                        item("自動").tag("")
+                        ForEach(state.browsers) { browser in
+                            item(browser.name).tag(browser.id)
+                        }
+                    }
                 }
             }
-            .frame(maxWidth: 320)
+            .padding(.vertical, 2)
+        }
+    }
 
-            Picker("逃げ先", selection: fallbackBinding) {
-                Text("自動").tag("")
-                ForEach(state.browsers) { browser in
-                    Text(browser.name).tag(browser.id)
-                }
-            }
-            .frame(maxWidth: 320)
+    /// Picker の幅は「いちばん広い項目」で決まる。項目の幅を固定して、
+    /// どの Picker も同じ幅のボタンになるようにする。
+    private func item(_ title: String) -> some View {
+        Text(title).frame(width: Self.controlWidth - 26, alignment: .leading)
+    }
+
+    private static let controlWidth: CGFloat = 220
+
+    private func settingRow<Control: View>(
+        _ title: String,
+        @ViewBuilder control: () -> Control
+    ) -> some View {
+        HStack(spacing: 14) {
+            Text(title)
+                .frame(width: 100, alignment: .leading)
+            control()
+                .labelsHidden()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(width: Self.controlWidth)
+            Spacer(minLength: 0)
         }
     }
 
