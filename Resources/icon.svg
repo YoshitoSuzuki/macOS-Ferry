@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ferry のアプリアイコン。1024x1024。
+  macOS の作法にならい、角丸四角は 824x824 で中央に置き、周囲 100px は余白にする
+  （Dock で他のアイコンと同じ大きさに見えるようにするため）。
+  ここを編集したら ./make-icon.sh を実行して Resources/Ferry.icns を作り直す。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5FB7F2"/>
+      <stop offset="0.55" stop-color="#2C87DA"/>
+      <stop offset="1" stop-color="#155FB0"/>
+    </linearGradient>
+    <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DCEBF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 角丸四角（squircle 相当の角丸） -->
+  <rect x="100" y="100" width="824" height="824" rx="185" ry="185" fill="url(#sea)"/>
+
+  <!-- 船 -->
+  <g>
+    <!-- 煙突 -->
+    <rect x="536" y="282" width="62" height="84" rx="14" fill="#FFD34F"/>
+    <!-- 操舵室 -->
+    <rect x="392" y="352" width="240" height="86" rx="18" fill="url(#hull)"/>
+    <!-- 客室 -->
+    <rect x="306" y="438" width="412" height="118" rx="20" fill="url(#hull)"/>
+    <!-- 窓 -->
+    <g fill="#2C87DA">
+      <circle cx="360" cy="497" r="19"/>
+      <circle cx="428" cy="497" r="19"/>
+      <circle cx="496" cy="497" r="19"/>
+      <circle cx="564" cy="497" r="19"/>
+      <circle cx="632" cy="497" r="19"/>
+      <rect x="416" y="378" width="192" height="34" rx="12"/>
+    </g>
+    <!-- 船体 -->
+    <path d="M 214 556 H 810 L 754 668 C 686 706 338 706 270 668 Z" fill="url(#hull)"/>
+    <!-- 喫水線 -->
+    <path d="M 236 604 H 788 L 770 640 H 254 Z" fill="#F2683C"/>
+  </g>
+
+  <!-- 波 -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round" opacity="0.55">
+    <path d="M 214 742 q 62 -38 124 0 t 124 0 t 124 0 t 124 0"/>
+    <path d="M 268 818 q 62 -38 124 0 t 124 0 t 124 0" opacity="0.7"/>
+  </g>
+</svg>

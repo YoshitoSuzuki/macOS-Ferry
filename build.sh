@@ -47,6 +47,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Ferry"
 cp "$ROOT/Resources/Info.plist" "$APP/Contents/Info.plist"
+cp "$ROOT/Resources/Ferry.icns" "$APP/Contents/Resources/Ferry.icns"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 # ad-hoc 署名。個人利用ではこれで足りる（配布するなら Developer ID が要る）

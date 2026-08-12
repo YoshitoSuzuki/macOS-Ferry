@@ -10,6 +10,10 @@
     <string>one.yoshito.Ferry</string>
     <key>CFBundleExecutable</key>
     <string>Ferry</string>
+    <key>CFBundleIconFile</key>
+    <string>Ferry</string>
+    <key>CFBundleIconName</key>
+    <string>Ferry</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
