@@ -1,5 +1,10 @@
 # 履歴
 
+## 2026-08-12 — 公開
+
+アイコン（`Resources/icon.svg` → `make-icon.sh` で `Ferry.icns`）と MIT ライセンスを付け、
+**https://github.com/YoshitoSuzuki/macOS-Ferry** で public 公開した。
+
 ## 2026-08-12 — 初版
 
 リンクを開くブラウザを選べる既定ブラウザアプリとして新規作成した。
