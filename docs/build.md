@@ -3,7 +3,7 @@
 最終更新: 2026-08-12
 
 ```bash
-cd ~/root/personal/app/xCode/Project/Ferry
+cd path/to/macOS-Ferry
 ./build.sh            # dist/Ferry.app を作る
 ./build.sh run        # 作って起動する
 ./build.sh install    # ~/Applications に入れて起動する
