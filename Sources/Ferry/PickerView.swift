@@ -88,19 +88,13 @@ struct PickerView: View {
         }
     }
 
+    /// 操作キーの説明はここに出さない（docs/usage.md にある）。
     private var footer: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            if let host = model.ruleHost {
-                Toggle(isOn: $model.remember) {
-                    Text("以後 \(host) はこのブラウザで開く")
-                        .font(.caption)
-                }
-                .toggleStyle(.checkbox)
-            }
-            Text("1〜9 で選択 ・ ←→ と return ・ space で上のチェック ・ esc で中止")
-                .font(.caption2)
-                .foregroundStyle(.tertiary)
+        Toggle(isOn: $model.remember) {
+            Text("記憶")
+                .font(.caption)
         }
+        .toggleStyle(.checkbox)
     }
 }
 

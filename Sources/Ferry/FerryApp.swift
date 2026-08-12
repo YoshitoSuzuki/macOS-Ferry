@@ -83,16 +83,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
     }
 
+    /// 項目名は名詞だけにする。状態はチェックマークで示し、文章では書かない。
     func menuNeedsUpdate(_ menu: NSMenu) {
         let state = AppState.shared
         menu.removeAllItems()
 
-        menu.addItem(header(Browsers.isFerryDefault() ? "既定ブラウザになっている" : "既定ブラウザではない"))
+        let isDefault = NSMenuItem(title: "既定ブラウザ", action: nil, keyEquivalent: "")
+        isDefault.isEnabled = false
+        isDefault.state = Browsers.isFerryDefault() ? .on : .off
+        menu.addItem(isDefault)
 
-        let fallback = state.fallbackBrowser()?.name ?? "逃げ先なし"
         let pause = NSMenuItem(
-            title: "一時停止（すべて \(fallback) で開く）",
-            action: #selector(togglePause), keyEquivalent: ""
+            title: "一時停止", action: #selector(togglePause), keyEquivalent: ""
         )
         pause.target = self
         pause.state = state.isPaused ? .on : .off
@@ -100,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         if !state.history.isEmpty {
             menu.addItem(.separator())
-            menu.addItem(header("最近開いたリンク（選ぶと開き直す）"))
+            menu.addItem(header("履歴"))
             for entry in state.history.prefix(5) {
                 let title = "\(entry.url.host ?? entry.url.absoluteString) — \(entry.browserName)"
                 let item = NSMenuItem(
@@ -115,7 +117,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
 
         let login = NSMenuItem(
-            title: "ログイン時に起動", action: #selector(toggleLaunchAtLogin), keyEquivalent: ""
+            title: "自動起動", action: #selector(toggleLaunchAtLogin), keyEquivalent: ""
         )
         login.target = self
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
@@ -129,7 +131,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         menu.addItem(.separator())
 
-        let quit = NSMenuItem(title: "Ferry を終了", action: #selector(quit), keyEquivalent: "q")
+        let quit = NSMenuItem(title: "終了", action: #selector(quit), keyEquivalent: "q")
         quit.target = self
         menu.addItem(quit)
     }
@@ -157,12 +159,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 try SMAppService.mainApp.register()
             }
         } catch {
-            // ad-hoc 署名だと登録できないことがある
+            // ad-hoc 署名だと登録できないことがある。
+            // 対処（システム設定から手で追加する）は docs/usage.md に書く。
             AppLog.write("ログイン項目の変更に失敗: \(error)")
             let alert = NSAlert()
-            alert.messageText = "ログイン項目に登録できませんでした"
-            alert.informativeText =
-                "システム設定 → 一般 → ログイン項目 から手で追加してください。\n\(error.localizedDescription)"
+            alert.messageText = "登録できませんでした"
             alert.runModal()
         }
     }
@@ -186,7 +187,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 backing: .buffered,
                 defer: false
             )
-            created.title = "Ferry の設定"
+            created.title = "設定"
             created.isReleasedWhenClosed = false
             created.center()
             created.setFrameAutosaveName("FerrySettingsWindow")
